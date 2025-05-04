@@ -46,7 +46,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitTransfer" :loading="loading">提交申请</el-button>
+          <el-button type="primary" @click="submitTransferForm" :loading="loading">提交申请</el-button>
           <el-button @click="$router.push('/transfers')">取消</el-button>
         </el-form-item>
       </el-form>
@@ -56,6 +56,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { getPlayers } from '@/api/players'
 import { getClubs } from '@/api/clubs'
 import { submitTransfer } from '@/api/transfers'
@@ -80,6 +81,7 @@ const players = ref([])
 const clubs = ref([])
 const loading = ref(false)
 const transferForm = ref(null)
+const router = useRouter()
 
 const fetchPlayers = async () => {
   try {
@@ -105,7 +107,7 @@ const submitTransferForm = async () => {
     loading.value = true
     await submitTransfer(form.value)
     ElMessage.success('转会申请提交成功')
-    transferForm.value.resetFields()
+    router.push('/transfers')
   } catch (error) {
     console.error('提交转会申请失败:', error)
     ElMessage.error('提交失败')

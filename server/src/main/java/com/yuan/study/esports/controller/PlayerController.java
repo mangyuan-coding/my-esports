@@ -2,7 +2,9 @@ package com.yuan.study.esports.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuan.study.esports.controller.api.*;
+import com.yuan.study.esports.repository.mapper.ClubMapper;
 import com.yuan.study.esports.repository.mapper.PlayerMapper;
+import com.yuan.study.esports.repository.po.ClubPO;
 import com.yuan.study.esports.repository.po.PlayerPO;
 import com.yuan.study.esports.service.PlayerService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +22,7 @@ import java.util.Objects;
 public class PlayerController {
 
     private final PlayerMapper playerMapper;
+    private final ClubMapper clubMapper;
     private final PlayerService playerService;
 
     @GetMapping
@@ -26,7 +31,9 @@ public class PlayerController {
         if (Objects.isNull(playerPOS) || playerPOS.isEmpty()) {
             return Response.ofSuccess(Collections.emptyList());
         }
-        return Response.ofSuccess(PlayersQuery.from(playerPOS));
+        Set<Long> clubIds = playerPOS.stream().map(PlayerPO::getClubId).collect(Collectors.toSet());
+        List<ClubPO> clubPOS = clubMapper.selectByIds(clubIds);
+        return Response.ofSuccess(PlayersQuery.from(playerPOS, clubPOS));
     }
 
     @GetMapping("/{id}")
@@ -46,7 +53,7 @@ public class PlayerController {
 
     @PutMapping("/{id}")
     public Response<UpdatePlayerCommand.Result> update(@PathVariable("id") Long id,
-                                                         @RequestBody UpdatePlayerCommand command) {
+                                                       @RequestBody UpdatePlayerCommand command) {
         return Response.ofSuccess(playerService.update(id, command));
     }
 

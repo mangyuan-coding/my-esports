@@ -23,4 +23,13 @@ public class Transfer {
     private LocalDate transferDate;
 
     private String notes;
+
+    private Status status;
+
+    public enum Status {
+        pending,
+        approved,
+        rejected,
+        completed;
+    }
 }

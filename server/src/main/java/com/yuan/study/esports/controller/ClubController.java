@@ -38,7 +38,9 @@ public class ClubController {
         if (Objects.isNull(selected)) {
             return Response.ofSuccess();
         }
-        return Response.ofSuccess(ClubQuery.from(selected));
+        List<PlayerPO> playerPOS = playerMapper
+                .selectList(new QueryWrapper<PlayerPO>().lambda().eq(PlayerPO::getClubId, id));
+        return Response.ofSuccess(ClubQuery.from(selected, playerPOS));
     }
 
     @PostMapping

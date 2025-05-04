@@ -3,6 +3,7 @@ package com.yuan.study.esports.repository.po;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yuan.study.esports.domain.Game;
+import com.yuan.study.esports.domain.Transfer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,8 @@ public class TransferPO {
     private Long playerId;
 
     private Long toClubId;
+
+    private Transfer.Status status;
 
     private BigDecimal transferFee;
 
