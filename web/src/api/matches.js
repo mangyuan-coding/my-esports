@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = '/api/matches'
+const API_URL = import.meta.env.VITE_API_URL
 
 /**
  * 获取所有赛事列表
@@ -9,7 +9,7 @@ const API_URL = '/api/matches'
  */
 export const getMatches = async (params = {}) => {
     try {
-        const response = await axios.get(API_URL, { params })
+        const response = await axios.get(`${API_URL}/matches`, { params })
         return response.data
     } catch (error) {
         console.error('获取赛事列表失败:', error)
@@ -24,7 +24,7 @@ export const getMatches = async (params = {}) => {
  */
 export const getMatchById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/${id}`)
+        const response = await axios.get(`${API_URL}/matches/${id}`)
         return response.data
     } catch (error) {
         console.error('获取赛事详情失败:', error)
@@ -39,7 +39,7 @@ export const getMatchById = async (id) => {
  */
 export const createMatch = async (matchData) => {
     try {
-        const response = await axios.post(API_URL, matchData)
+        const response = await axios.post(`${API_URL}/matches`, matchData)
         return response.data
     } catch (error) {
         console.error('创建赛事失败:', error)

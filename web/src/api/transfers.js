@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = '/api/transfers'
+const API_URL = import.meta.env.VITE_API_URL
 
 /**
  * 获取所有转会记录
@@ -9,7 +9,7 @@ const API_URL = '/api/transfers'
  */
 export const getTransfers = async (params = {}) => {
     try {
-        const response = await axios.get(API_URL, { params })
+        const response = await axios.get(`${API_URL}/transfers`, { params })
         return response.data
     } catch (error) {
         console.error('获取转会记录失败:', error)
@@ -24,7 +24,7 @@ export const getTransfers = async (params = {}) => {
  */
 export const getTransferById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/${id}`)
+        const response = await axios.get(`${API_URL}/transfers/${id}`)
         return response.data
     } catch (error) {
         console.error('获取转会详情失败:', error)
@@ -39,7 +39,7 @@ export const getTransferById = async (id) => {
  */
 export const submitTransfer = async (transferData) => {
     try {
-        const response = await axios.post(API_URL, transferData)
+        const response = await axios.post(`${API_URL}/transfers`, transferData)
         return response.data
     } catch (error) {
         console.error('提交转会申请失败:', error)
@@ -55,7 +55,7 @@ export const submitTransfer = async (transferData) => {
  */
 export const reviewTransfer = async (id, status) => {
     try {
-        const response = await axios.patch(`${API_URL}/${id}/review`, { status })
+        const response = await axios.patch(`${API_URL}/transfers/${id}/review`, { status })
         return response.data
     } catch (error) {
         console.error('审核转会申请失败:', error)
@@ -70,7 +70,7 @@ export const reviewTransfer = async (id, status) => {
  */
 export const completeTransfer = async (id) => {
     try {
-        const response = await axios.post(`${API_URL}/${id}/complete`)
+        const response = await axios.post(`${API_URL}/transfers/${id}/complete`)
         return response.data
     } catch (error) {
         console.error('完成转会签约失败:', error)
@@ -85,7 +85,7 @@ export const completeTransfer = async (id) => {
  */
 export const getPlayerTransfers = async (playerId) => {
     try {
-        const response = await axios.get(`${API_URL}/player/${playerId}`)
+        const response = await axios.get(`${API_URL}/transfers/player/${playerId}`)
         return response.data
     } catch (error) {
         console.error('获取选手转会历史失败:', error)

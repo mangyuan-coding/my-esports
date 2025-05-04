@@ -43,12 +43,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useClubsStore } from '@/stores/clubs'
 import { ElMessage } from 'element-plus'
 
 const route = useRoute()
 const router = useRouter()
+const clubsStore = useClubsStore()
 const formRef = ref(null)
 
 const isEdit = computed(() => route.name === 'EditClub')
@@ -67,10 +69,28 @@ const rules = {
   location: [{ required: true, message: '请输入所在地', trigger: 'blur' }]
 }
 
+onMounted(async () => {
+  if (isEdit.value) {
+    await clubsStore.fetchClub(route.params.id)
+    form.value = { ...clubsStore.currentClub }
+  }
+})
+
 const submitForm = async () => {
   try {
     await formRef.value.validate()
-    ElMessage.success(isEdit.value ? '更新成功' : '创建成功')
+    
+    if (isEdit.value) {
+      await clubsStore.updateClubData(
+        route.params.id,
+        form.value
+      )
+      ElMessage.success('选手信息更新成功')
+    } else {
+      await clubsStore.createNewClub(form.value)
+      ElMessage.success('选手添加成功')
+    }
+
     router.push('/clubs')
   } catch (error) {
     console.error('表单验证失败:', error)

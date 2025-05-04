@@ -1,3 +1,23 @@
+server:
+    port: 8080
+    servlet:
+        context-path: /api
 spring:
     application:
         name: my-esports
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/e-sports
+        username: root
+        password: 1qazXSW@3edc
+        hikari:
+            # 连接池最大连接数
+            maximum-pool-size: 12
+            # 空闲时保持最小连接数
+            minimum-idle: 5
+            # 空闲连接存活时间
+            idle-timeout: 300000
+            # 连接超时时间
+            connection-timeout: 20000
+            # 测试sql
+            connection-test-query: select 1

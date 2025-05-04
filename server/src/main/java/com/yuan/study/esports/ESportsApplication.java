@@ -1,13 +1,13 @@
-package com.yuan.study.my_esports;
+package com.yuan.study.esports;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MyEsportsApplication {
+public class ESportsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MyEsportsApplication.class, args);
+		SpringApplication.run(ESportsApplication.class, args);
 	}
 
 }

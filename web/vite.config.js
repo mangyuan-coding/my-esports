@@ -21,7 +21,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: `${process.env.VITE_API_URL}/api` || 'http://localhost:8080/api',
         changeOrigin: true,
         bypass: (req) => {
           if (req.url === '/api/players') {
