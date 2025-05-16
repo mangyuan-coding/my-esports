@@ -2,9 +2,7 @@ import { defineStore } from 'pinia'
 import {
     getTransfers,
     getTransferById,
-    submitTransfer,
     reviewTransfer,
-    completeTransfer,
     getPlayerTransfers
 } from '@/api/transfers'
 
@@ -45,21 +43,6 @@ export const useTransfersStore = defineStore('transfers', {
             }
         },
 
-        async submitNewTransfer(transferData) {
-            this.loading = true
-            try {
-                const response = await submitTransfer(transferData)
-                this.transfers.push(response.data)
-                this.error = null
-                return response.data
-            } catch (error) {
-                this.error = error.message || '提交转会申请失败'
-                throw error
-            } finally {
-                this.loading = false
-            }
-        },
-
         async reviewTransferRequest(id, status) {
             this.loading = true
             try {
@@ -72,24 +55,6 @@ export const useTransfersStore = defineStore('transfers', {
                 return response.data
             } catch (error) {
                 this.error = error.message || '审核转会申请失败'
-                throw error
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async completeTransferProcess(id) {
-            this.loading = true
-            try {
-                const response = await completeTransfer(id)
-                const index = this.transfers.findIndex(t => t.id === id)
-                if (index !== -1) {
-                    this.transfers.splice(index, 1, response.data)
-                }
-                this.error = null
-                return response.data
-            } catch (error) {
-                this.error = error.message || '完成转会失败'
                 throw error
             } finally {
                 this.loading = false

@@ -8,23 +8,14 @@
       <el-form :model="form" :rules="rules" ref="transferForm" label-width="120px">
         <el-form-item label="选手" prop="playerId">
           <el-select v-model="form.playerId" placeholder="请选择选手" style="width: 100%">
-            <el-option
-                v-for="player in players"
-                :key="player.id"
-                :label="`${player.name} (${player.club.name})`"
-                :value="player.id"
-            />
+            <el-option v-for="player in players" :key="player.id" :label="`${player.name} (${player.club.name})`"
+              :value="player.id" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="目标俱乐部" prop="toClubId">
           <el-select v-model="form.toClubId" placeholder="请选择目标俱乐部" style="width: 100%">
-            <el-option
-                v-for="club in clubs"
-                :key="club.id"
-                :label="club.name"
-                :value="club.id"
-            />
+            <el-option v-for="club in clubs" :key="club.id" :label="club.name" :value="club.id" />
           </el-select>
         </el-form-item>
 
@@ -33,12 +24,7 @@
         </el-form-item>
 
         <el-form-item label="转会日期" prop="transferDate">
-          <el-date-picker
-              v-model="form.transferDate"
-              type="date"
-              placeholder="选择日期"
-              style="width: 100%"
-          />
+          <el-date-picker v-model="form.transferDate" type="date" placeholder="选择日期" style="width: 100%" />
         </el-form-item>
 
         <el-form-item label="备注" prop="notes">
@@ -105,12 +91,24 @@ const submitTransferForm = async () => {
   try {
     await transferForm.value.validate()
     loading.value = true
-    await submitTransfer(form.value)
+    const response = await submitTransfer(form.value)
+    const { existed, playerNotExist, applyOwnClub } = response.data
+    if (existed) {
+      ElMessage.error('提交失败：转会申请已存在')
+      throw new Error()
+    }
+    if (playerNotExist) {
+      ElMessage.error('提交失败：选手不存在')
+      throw new Error()
+    }
+    if (applyOwnClub) {
+      ElMessage.error('提交失败：不能申请转会到自己的俱乐部')
+      throw new Error()
+    }
     ElMessage.success('转会申请提交成功')
     router.push('/transfers')
   } catch (error) {
-    console.error('提交转会申请失败:', error)
-    ElMessage.error('提交失败')
+    console.error('提交转会申请失败:')
   } finally {
     loading.value = false
   }

@@ -6,6 +6,7 @@ import com.yuan.study.esports.repository.po.TransferPO;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,6 +44,7 @@ public class TransfersQuery {
                                 .name(toClub.getName())
                                 .build())
                         .status(transfer.getStatus())
+                        .createdAt(transfer.getTransferDate())
                         .transferFee(transfer.getTransferFee())
                         .build());
             }
@@ -65,6 +67,8 @@ public class TransfersQuery {
         private Club toClub;
 
         private BigDecimal transferFee;
+
+        private LocalDate createdAt;
 
         private com.yuan.study.esports.domain.Transfer.Status status;
     }

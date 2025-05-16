@@ -33,6 +33,7 @@ public class SubmitTransferCommand {
     @Mapper
     public interface Converter {
         Converter INSTANCE = Mappers.getMapper(Converter.class);
+
         @Mapping(target = "status", ignore = true)
         @Mapping(target = "id", ignore = true)
         Transfer toTransfer(SubmitTransferCommand command);
@@ -44,12 +45,24 @@ public class SubmitTransferCommand {
 
         private Boolean existed;
 
+        private Boolean playerNotExist;
+
+        private Boolean applyOwnClub;
+
         public static Result ofExisted() {
-            return new Result(true);
+            return new Result(true, true, true);
+        }
+
+        public static Result ofPlayerNotExist() {
+            return new Result(false, true, false);
+        }
+
+        public static Result ofApplyOwnClub() {
+            return new Result(false, false, true);
         }
 
         public static Result ofSuccess() {
-            return new Result(false);
+            return new Result(false, false, false);
         }
     }
 }

@@ -37,6 +37,13 @@ public class TransferRepository {
         return Optional.of(TransferConverter.INSTANCE.fromPO(transferPO));
     }
 
+    public Boolean existPendingByPlayerId(Long playId) {
+        Long pending = transferMapper.selectCount(new QueryWrapper<TransferPO>().lambda()
+                .eq(TransferPO::getStatus, Transfer.Status.pending)
+                .eq(TransferPO::getPlayerId, playId));
+        return Objects.nonNull(pending) && pending > 0;
+    }
+
     public void update(Transfer transfer) {
         transferMapper.updateById(TransferConverter.INSTANCE.toPO(transfer));
     }

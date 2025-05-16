@@ -12,8 +12,8 @@ const registerUser = async (userData) => {
     return response.data
 }
 
-const logoutUser = async () => {
-    const response = await axios.post(`${API_URL}/auth/logout`)
+const logoutUser = async (userData) => {
+    const response = await axios.post(`${API_URL}/auth/logout`, userData)
     return response.data
 }
 

@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const logout = async () => {
         try {
-            await logoutUser()
+            await logoutUser(user.value)
             user.value = null
             isAuthenticated.value = false
             localStorage.removeItem('user')

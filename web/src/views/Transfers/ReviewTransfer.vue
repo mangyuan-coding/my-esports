@@ -41,27 +41,15 @@
         </el-table-column>
         <el-table-column label="操作" width="220">
           <template #default="{ row }">
-            <el-button
-                type="success"
-                size="small"
-                @click="handleReview(row.id, 'approved')"
-                :disabled="row.status !== 'pending'"
-            >
+            <el-button type="success" size="small" @click="handleReview(row.id, 'approved')"
+              :disabled="row.status !== 'pending'">
               批准
             </el-button>
-            <el-button
-                type="danger"
-                size="small"
-                @click="handleReview(row.id, 'rejected')"
-                :disabled="row.status !== 'pending'"
-            >
+            <el-button type="danger" size="small" @click="handleReview(row.id, 'rejected')"
+              :disabled="row.status !== 'pending'">
               拒绝
             </el-button>
-            <el-button
-                type="info"
-                size="small"
-                @click="showDetails(row)"
-            >
+            <el-button type="info" size="small" @click="showDetails(row)">
               详情
             </el-button>
           </template>
@@ -133,17 +121,17 @@ const showDetails = (transfer) => {
 const handleReview = async (id, status) => {
   try {
     await ElMessageBox.confirm(
-        `确定要${status === 'approved' ? '批准' : '拒绝'}该转会申请吗？`,
-        '审核确认',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
+      `确定要${status === 'approved' ? '批准' : '拒绝'}该转会申请吗？`,
+      '审核确认',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
     )
 
     loading.value = true
-    await transfersStore.reviewTransfer({ id, status })
+    await transfersStore.reviewTransferRequest(id, status)
     ElMessage.success('审核操作成功')
   } catch (error) {
     if (error !== 'cancel') {
@@ -176,7 +164,7 @@ onMounted(async () => {
   margin-top: 20px;
 }
 
-.el-button + .el-button {
+.el-button+.el-button {
   margin-left: 8px;
 }
 </style>
